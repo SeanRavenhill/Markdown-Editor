@@ -20,13 +20,13 @@ def main():
                   "inline-code ordered-list unordered-list new-line")
             print("Special commands: !help !done")
 
-        elif user_input == "ordered-list" or user_input == "unordered-list":
-            stored_string += formatters[user_input](user_input)
-            print(stored_string)
-
         elif user_input in formatters.keys():
-            stored_string += formatters[user_input]()
-            print(stored_string)
+            if user_input in ["ordered-list", "unordered-list"]:
+                stored_string += formatters[user_input](user_input)
+                print(stored_string)
+            else:
+                stored_string += formatters[user_input]()
+                print(stored_string)
 
         elif user_input == "!done":
             conv_string_file(stored_string)
@@ -92,13 +92,10 @@ def make_list(user_input):
             print("Please enter a valid number of rows")
             pass
 
-    if user_input == "ordered-list":
-        for r in range(rows):
-            r = r + 1
+    for r in range(1, rows + 1):
+        if user_input == "ordered-list":
             list_string += f"{r}. " + input(f"- Row #{r}: ") + "\n"
-    else:
-        for r in range(rows):
-            r = r + 1
+        else:
             list_string += "* " + input(f"- Row #{r}: ") + "\n"
 
     return list_string
