@@ -1,79 +1,75 @@
+def main():
 
-COMMANDS = ["plain",
-            "bold",
-            "italic",
-            "header",
-            "link",
-            "inline-code",
-            "ordered-list",
-            "unordered-list",
-            "new-line"]
+    formatters = {"plain": plain,
+                  "bold": bold,
+                  "italic": italic,
+                  "header": header,
+                  "link": link,
+                  "inline-code": inline_code,
+                  "ordered-list": ordered_list,
+                  "unordered-list": unordered_list,
+                  "new-line": new_line}
 
-stored_string = []
+    stored_string = ""
 
+    while True:
+        user_input = input("- Choose a formatter: ").lower()
 
-def command():
-    user_input = input("- Choose a formatter: ")
-    if user_input == "!help":
-        print("Available formatters: plain bold italic header link inline-code"
-              " ordered-list unordered-list new-line")
-        print("Special commands: !help !done")
-        command()
-    elif user_input in COMMANDS:
-        formatter(user_input)
-    elif user_input == "!done":
-        exit()
-    else:
-        print("Unknown formatting type or command. Please try again.")
-        command()
+        if user_input == "!help":
+            print("Available formatters: plain bold italic header link "
+                  "inline-code ordered-list unordered-list new-line")
+            print("Special commands: !help !done")
+
+        elif user_input in formatters.keys():
+            stored_string += formatters[user_input]()
+            print(stored_string)
+
+        elif user_input == "!done":
+            break
+
+        else:
+            print("Unknown formatting type or command. Please try again.")
 
 
 def plain():
     text_input = input("- Text: ")
-    stored_string.append(text_input)
-    print_string()
-    command()
+    return text_input
 
 
 def bold():
     text_input = input("- Text: ")
-    stored_string.append("**" + text_input + "**")
-    print_string()
-    command()
+    return "**" + text_input + "**"
 
 
 def italic():
     text_input = input("- Text: ")
-    stored_string.append("*" + text_input + "*")
-    print_string()
-    command()
+    return "*" + text_input + "*"
 
 
 def header():
-    title_level = int(input("- Level: "))
-    if title_level not in range(1, 7):
-        print("The level should be within the range of 1 to 6")
-        header()
-    else:
-        title_input = input("- Text: ")
-        stored_string.append("#" * title_level + " " + title_input + "\n")
-        print_string()
-        command()
+    while True:
+        try:
+            title_level = int(input('Level: '))
+            if title_level in range(1, 7):
+                break
+            print('The level should be within the range of 1 to 6')
+        except ValueError:
+            print(ValueError)
+            pass
+
+    title_input = input("- Text: ")
+    return "#" * title_level + " " + title_input + "\n"
 
 
 def link():
     input_label = input("- Label: ")
     input_url = input("- URL: ")
-    stored_string.append("[" + input_label + "]" + "(" + input_url + ")")
-    print_string()
-    command()
+    return "[" + input_label + "]" + "(" + input_url + ")"
 
 
 def inline_code():
     text_input = input("- Text: ")
-    stored_string.append("`" + text_input + "`")
-    print_string()
-    command()
+    return "`" + text_input + "`"
 
 
 def ordered_list():
@@ -85,37 +81,8 @@ def unordered_list():
 
 
 def new_line():
-    stored_string.append("\n")
-    print_string()
-    command()
+    return "\n"
 
 
-def formatter(user_input):
-    if user_input == "plain":
-        plain()
-    elif user_input == "bold":
-        bold()
-    elif user_input == "italic":
-        italic()
-    elif user_input == "header":
-        header()
-    elif user_input == "link":
-        link()
-    elif user_input == "inline-code":
-        inline_code()
-    elif user_input == "ordered-list":
-        ordered_list()
-    elif user_input == "unordered-list":
-        unordered_list()
-    elif user_input == "new-line":
-        new_line()
-    else:
-        print("Formatter type not recognised. Please try again.")
-        command()
-
-
-def print_string():
-    print("".join(stored_string))
-
-
-command()
+if __name__ == '__main__':
+    main()
