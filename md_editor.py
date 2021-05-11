@@ -29,7 +29,8 @@ def main():
             print(stored_string)
 
         elif user_input == "!done":
-            break
+            conv_string_file(stored_string)
+            exit()
 
         else:
             print("Unknown formatting type or command. Please try again.")
@@ -78,6 +79,7 @@ def inline_code():
 
 # function for ordered-list & unordered-list formatters
 def make_list(user_input):
+
     list_string = ""
 
     while True:
@@ -104,6 +106,12 @@ def make_list(user_input):
 
 def new_line():
     return "\n"
+
+
+def conv_string_file(text):
+    f = open('output.md', 'w+')
+    f.write(text)
+    f.close()
 
 
 if __name__ == '__main__':
