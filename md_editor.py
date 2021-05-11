@@ -6,8 +6,8 @@ def main():
                   "header": header,
                   "link": link,
                   "inline-code": inline_code,
-                  "ordered-list": ordered_list,
-                  "unordered-list": unordered_list,
+                  "ordered-list": make_list,
+                  "unordered-list": make_list,
                   "new-line": new_line}
 
     stored_string = ""
@@ -19,6 +19,10 @@ def main():
             print("Available formatters: plain bold italic header link "
                   "inline-code ordered-list unordered-list new-line")
             print("Special commands: !help !done")
+
+        elif user_input == "ordered-list" or user_input == "unordered-list":
+            stored_string += formatters[user_input](user_input)
+            print(stored_string)
 
         elif user_input in formatters.keys():
             stored_string += formatters[user_input]()
@@ -72,12 +76,30 @@ def inline_code():
     return "`" + text_input + "`"
 
 
-def ordered_list():
-    pass
+# function for ordered-list & unordered-list formatters
+def make_list(user_input):
+    list_string = ""
 
+    while True:
+        try:
+            rows = int(input("- Number of rows: "))
+            if rows >= 1:
+                break
+            print("The number of rows should be greater than zero")
+        except ValueError:
+            print("Please enter a valid number of rows")
+            pass
 
-def unordered_list():
-    pass
+    if user_input == "ordered-list":
+        for r in range(rows):
+            r = r + 1
+            list_string += f"{r}. " + input(f"- Row #{r}: ") + "\n"
+    else:
+        for r in range(rows):
+            r = r + 1
+            list_string += "* " + input(f"- Row #{r}: ") + "\n"
+
+    return list_string
 
 
 def new_line():
